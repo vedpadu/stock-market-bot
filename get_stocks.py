@@ -1,12 +1,13 @@
 import requests
 import re
 import yfinance as yf
+import keys
 import alpaca_trade_api as tradeapi
 from bs4 import BeautifulSoup
 
-api = tradeapi.REST('PK7CSTG35RWQPZCLOFRO', 'j7V0zezls2H7TFgrlKNIRySGbuwWBlo5rWAXK9Kh', base_url='https://paper-api.alpaca.markets') # or use ENV Vars shown below
+api = tradeapi.REST(keys.PUBLIC_KEY, keys.PRIVATE_KEY, base_url='https://paper-api.alpaca.markets') # or use ENV Vars shown below
 account = api.get_account()
-print(account)
+#print(account)
 
 
 soup = BeautifulSoup(requests.get("https://robinhood.com/collections/100-most-popular").content, 'html.parser')
@@ -15,7 +16,7 @@ soup.prettify()
 
 URL = "https://robinhood.com/collections/100-most-popular"
 
-def get_stocks():
+def get_stocks_dict():
     soup = BeautifulSoup(requests.get("https://robinhood.com/collections/100-most-popular").content, 'html.parser')
     soup.prettify()
     stock_dict = {}
@@ -30,11 +31,19 @@ def get_stocks():
     for x in range(len(buy_percents)):
         stock_dict[stock_names[x]] = buy_percents[x].split("% ")[0]
 
-    print(stock_dict)
+    return stock_dict
+
+def get_stock_prices():
+    soup = BeautifulSoup(requests.get("https://robinhood.com/collections/100-most-popular").content, 'html.parser')
+    soup.prettify()
+    stock_prices = []
+    for price in soup.body.findAll(text=re.compile('\$')):
+        if "." in price:
+            stock_prices.append(price)
+    print(stock_prices)
 
 
 
 
 tsla = yf.Ticker("TSLA")
 
-print(tsla.info);
