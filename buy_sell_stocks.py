@@ -1,8 +1,5 @@
 import math
-
-import yfinance as yf
 import get_stocks
-import json
 import alpaca_trade_api as tradeapi
 import keys
 
@@ -11,7 +8,7 @@ BUY_THRESHOLD = 75
 #0-100 at what buy percent should we sell
 SELL_THRESHOLD = 25
 #number of stocks to manage
-STOCK_TOTAL = 20
+STOCK_TOTAL = 15
 api = tradeapi.REST(keys.PUBLIC_KEY, keys.PRIVATE_KEY, base_url='https://paper-api.alpaca.markets') # or use ENV Vars shown below
 account = api.get_account()
 
@@ -24,6 +21,7 @@ def get_stocks_to_buy():
         if int(stocks_dict[name]) >= BUY_THRESHOLD:
             stocks_to_buy_dict[name] = stocks_dict[name]
     return stocks_to_buy_dict
+
 
 def get_stock_prices_to_buy():
     stocks_dict = get_stocks.get_stocks_dict()

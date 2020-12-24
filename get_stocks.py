@@ -1,13 +1,8 @@
 import requests
 import re
-import yfinance as yf
 import keys
-import alpaca_trade_api as tradeapi
 from bs4 import BeautifulSoup
 import json
-
-
-#print(account)
 
 
 def get_current_stocks():
